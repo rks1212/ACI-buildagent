@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "containerName": {
+            "value": "aci-linux-build-agent"
+        },
+        "location": {
+            "value": "westus"
+        },
+        "imageType": {
+            "value": "Private"
+        },
+        "imageName": {
+            "value": "raviacrdemo1.azurecr.io/adoagent/agent:v1"
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "numberCpuCores": {
+            "value": "1"
+        },
+        "memory": {
+            "value": "1.5"
+        },
+        "restartPolicy": {
+            "value": "OnFailure"
+        },
+        "imageRegistryLoginServer": {
+            "value": "raviacrdemo1.azurecr.io"
+        },
+        "imageUsername": {
+            "value": "raviacrdemo1"
+        },
+        "imagePassword": {
+            "value": null
+        },
+        "ipAddressType": {
+            "value": "Private"
+        },
+        "ports": {
+            "value": [
+                {
+                    "port": "80",
+                    "protocol": "TCP"
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "ACI-Subnet"
+        },
+        "subnetAddressPrefix": {
+            "value": "10.1.0.0/16"
+        }
+    }
+}
