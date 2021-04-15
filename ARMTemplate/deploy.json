@@ -1,0 +1,331 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "containerName": {
+            "type": "string"
+        },
+        "imageType": {
+            "type": "string",
+            "allowedValues": [
+                "Public",
+                "Private"
+            ]
+        },
+        "imageName": {
+            "type": "string"
+        },
+        "osType": {
+            "type": "string",
+            "allowedValues": [
+                "Linux",
+                "Windows"
+            ]
+        },
+        "numberCpuCores": {
+            "type": "string"
+        },
+        "memory": {
+            "type": "string"
+        },
+        "restartPolicy": {
+            "type": "string",
+            "allowedValues": [
+                "OnFailure",
+                "Always",
+                "Never"
+            ]
+        },
+        "imageRegistryLoginServer": {
+            "type": "string"
+        },
+        "imageUsername": {
+            "type": "string"
+        },
+        "imagePassword": {
+            "type": "secureString"
+        },
+        "ipAddressType": {
+            "type": "string"
+        },
+        "ports": {
+            "type": "array"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "subnetAddressPrefix": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "location": "[parameters('location')]",
+            "name": "[parameters('containerName')]",
+            "type": "Microsoft.ContainerInstance/containerGroups",
+            "apiVersion": "2019-12-01",
+            "properties": {
+                "containers": [
+                    {
+                        "name": "[parameters('containerName')]",
+                        "properties": {
+                            "image": "[parameters('imageName')]",
+                            "resources": {
+                                "requests": {
+                                    "cpu": "[int(parameters('numberCpuCores'))]",
+                                    "memoryInGB": "[float(parameters('memory'))]"
+                                }
+                            },
+                            "ports": "[parameters('ports')]"
+                        }
+                    }
+                ],
+                "restartPolicy": "[parameters('restartPolicy')]",
+                "osType": "[parameters('osType')]",
+                "imageRegistryCredentials": [
+                    {
+                        "server": "[parameters('imageRegistryLoginServer')]",
+                        "username": "[parameters('imageUsername')]",
+                        "password": "[parameters('imagePassword')]"
+                    }
+                ],
+                "ipAddress": {
+                    "type": "[parameters('ipAddressType')]",
+                    "ports": "[parameters('ports')]"
+                },
+                "networkProfile": {
+                    "Id": "[resourceId('Microsoft.Network/networkProfiles', variables('networkProfileName'))]"
+                }
+            },
+            "tags": {},
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkProfiles', variables('networkProfileName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "Microsoft.ContainerInstances-20210415185631vnet",
+            "apiVersion": "2018-05-01",
+            "resourceGroup": "myResourceGroup",
+            "subscriptionId": "2b2bb6af-68a3-4419-af72-5ba0de5312e8",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "name": "myVnet",
+                            "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet",
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "location": "westus",
+                            "tags": {},
+                            "properties": {
+                                "provisioningState": "Succeeded",
+                                "resourceGuid": "65e31988-39d4-4311-9c29-18b961af4435",
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "10.0.0.0/8"
+                                    ]
+                                },
+                                "dhcpOptions": {
+                                    "dnsServers": []
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "myAKSSubnet",
+                                        "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/myAKSSubnet",
+                                        "etag": "W/\"902b280d-67ab-4cc9-9ff9-63033af0a91a\"",
+                                        "properties": {
+                                            "provisioningState": "Succeeded",
+                                            "addressPrefix": "10.240.0.0/16",
+                                            "ipConfigurations": [
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig1"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig2"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig3"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig4"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig5"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig6"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig7"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig8"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig9"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig10"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig11"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig12"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig13"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig14"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig15"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig16"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig17"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig18"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig19"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig20"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig21"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig22"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig23"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig24"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig25"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig26"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig27"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig28"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig29"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig30"
+                                                },
+                                                {
+                                                    "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/MC_myResourceGroup_myAKSCluster_westus/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-35776851-vmss/virtualMachines/0/networkInterfaces/aks-nodepool1-35776851-vmss/ipConfigurations/ipconfig31"
+                                                }
+                                            ],
+                                            "delegations": [],
+                                            "privateEndpointNetworkPolicies": "Enabled",
+                                            "privateLinkServiceNetworkPolicies": "Enabled"
+                                        },
+                                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                                    },
+                                    {
+                                        "name": "myVirtualNodeSubnet",
+                                        "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/myVirtualNodeSubnet",
+                                        "etag": "W/\"902b280d-67ab-4cc9-9ff9-63033af0a91a\"",
+                                        "properties": {
+                                            "provisioningState": "Succeeded",
+                                            "addressPrefix": "10.241.0.0/16",
+                                            "delegations": [],
+                                            "privateEndpointNetworkPolicies": "Enabled",
+                                            "privateLinkServiceNetworkPolicies": "Enabled"
+                                        },
+                                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                                    },
+                                    {
+                                        "name": "ACI-Subnet",
+                                        "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/ACI-Subnet",
+                                        "etag": "W/\"902b280d-67ab-4cc9-9ff9-63033af0a91a\"",
+                                        "properties": {
+                                            "provisioningState": "Succeeded",
+                                            "addressPrefix": "10.1.0.0/16",
+                                            "serviceEndpoints": [],
+                                            "delegations": [
+                                                {
+                                                    "name": "ACIDelegationService",
+                                                    "properties": {
+                                                        "serviceName": "Microsoft.ContainerInstance/containerGroups",
+                                                        "actions": [
+                                                            "Microsoft.Network/virtualNetworks/subnets/action"
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "privateEndpointNetworkPolicies": "Enabled",
+                                            "privateLinkServiceNetworkPolicies": "Enabled"
+                                        },
+                                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                                    }
+                                ],
+                                "virtualNetworkPeerings": [],
+                                "enableDdosProtection": false
+                            },
+                            "apiVersion": "2019-09-01"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[variables('networkProfileName')]",
+            "type": "Microsoft.Network/networkProfiles",
+            "apiVersion": "2019-11-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', 'Microsoft.ContainerInstances-20210415185631vnet')]"
+            ],
+            "properties": {
+                "containerNetworkInterfaceConfigurations": [
+                    {
+                        "name": "[variables('interfaceConfigName')]",
+                        "properties": {
+                            "ipConfigurations": [
+                                {
+                                    "name": "[variables('interfaceIpConfig')]",
+                                    "properties": {
+                                        "subnet": {
+                                            "id": "[variables('subnetId')]"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "variables": {
+        "networkProfileName": "aci-linux-build-agent-networkProfile",
+        "interfaceConfigName": "eth0",
+        "interfaceIpConfig": "ipconfigprofile1",
+        "vnetId": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet",
+        "subnetId": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/ACI-Subnet"
+    }
+}
