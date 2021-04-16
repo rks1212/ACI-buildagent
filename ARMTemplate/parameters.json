@@ -9,7 +9,36 @@
       "value": 1
     },
     "azdUrl": {
-      "value": "https://dev.azure.com/sharmara"
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kv-ravi-ado"
+        },
+        "secretName": "ADOURL"
+      }
+    },
+    "patToken": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kv-ravi-ado"
+        },
+        "secretName": "ADOToken"
+      }
+    },
+    "registryUserName": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kv-ravi-ado"
+        },
+        "secretName": "ACRUserName"
+      }
+    },
+    "registryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/2b2bb6af-68a3-4419-af72-5ba0de5312e8/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kv-ravi-ado"
+        },
+        "secretName": "ACRPassword"
+      }
     },
     "agentPool": {
       "value": "ACI-Pool"
