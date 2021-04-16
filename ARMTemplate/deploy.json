@@ -54,6 +54,15 @@
         "ports": {
             "type": "array"
         },
+         "AZP_URL": {
+      "type": "string",
+    },
+     "AZP_TOKEN": {
+      "type": "string",
+    },
+      "AZP_POOL": {
+      "type": "string",
+    },
         "subnetName": {
             "type": "string"
         },
