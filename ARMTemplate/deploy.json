@@ -18,6 +18,12 @@
         "imageName": {
             "type": "string"
         },
+        "volumename": {
+      "type": "string",
+      "metadata": {
+        "description": "Name for the secret volume"
+      },
+      "defaultValue": "volume1"
         "osType": {
             "type": "string",
             "allowedValues": [
