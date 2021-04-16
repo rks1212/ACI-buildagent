@@ -51,6 +51,15 @@
         },
         "subnetAddressPrefix": {
             "value": "10.1.0.0/16"
-        }
+        },
+         "AZP_URL": {
+	  "value": "https://dev.azure.com/sharmara"
+    },
+    "AZP_TOKEN": {
+	  "value": "yziidlo7suttdcfqpq747fo5mr2jjqsloqen6iwv7jlac3s43ndq"
+    },
+     "AZP_POOL": {
+	  "value": "ACI-Pool"
+    }
     }
 }
