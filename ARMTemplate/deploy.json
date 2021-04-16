@@ -79,6 +79,21 @@
                                     "memoryInGB": "[float(parameters('memory'))]"
                                 }
                             },
+                            "volumeMounts": [
+                {
+                  "name": "[parameters('volumename')]",
+                  "mountPath": "/mnt/secrets",
+                  "readOnly": false
+                },
+                              "volumes": [
+          {
+            "name": "[parameters('volumename')]",
+            "secret": {
+              "AZP_URL": "[parameters('AZP_URL')]",
+              "AZP_TOKEN": "[parameters('AZP_TOKEN')]",
+              "AZP_POOL": "[parameters('AZP_POOL')]"
+              
+            },
                             "ports": "[parameters('ports')]"
                         }
                     }
