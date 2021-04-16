@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: ACI-Pool
+  name: AKS-Pool
 
 parameters:
 #------Deployment Parameters--------#
