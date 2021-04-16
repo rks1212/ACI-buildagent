@@ -33,7 +33,7 @@ variables:
   value: ${{parameters.AzureSubscriptionID }}
 - name: serviceConnection
   value: ${{parameters.AzureDevOpServiceConnectionName }}
-
+stages:
 - stage: Deploy_ACI_buildagent
   jobs:
   - job: ACI_buildagent
