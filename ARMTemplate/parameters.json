@@ -22,15 +22,6 @@
     },
     "registryImageUri": {
       "value": "raviacrdemo1.azurecr.io/adoagent/agent:v1"
-    },
-    "registryUserName": {
-      "value": "raviacrdemo1"
-    },
-    "registryPassword": {
-      "value": "ah7aqklSkmrXWOSpXQmUtZYX7E2=rjE"
-    },
-    "patToken": {
-       "value": "yziidlo7suttdcfqpq747fo5mr2jjqsloqen6iwv7jlac3s43ndq"
     }
   }
 }
