@@ -1,65 +1,30 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "containerName": {
-            "value": "aci-linux-build-agent"
-        },
-        "location": {
-            "value": "westus"
-        },
-        "imageType": {
-            "value": "Private"
-        },
-        "imageName": {
-            "value": "raviacrdemo1.azurecr.io/adoagent/agent:v1"
-        },
-        "osType": {
-            "value": "Linux"
-        },
-        "numberCpuCores": {
-            "value": "1"
-        },
-        "memory": {
-            "value": "1.5"
-        },
-        "restartPolicy": {
-            "value": "OnFailure"
-        },
-        "imageRegistryLoginServer": {
-            "value": "raviacrdemo1.azurecr.io"
-        },
-        "imageUsername": {
-            "value": "raviacrdemo1"
-        },
-        "imagePassword": {
-            "value": null
-        },
-        "ipAddressType": {
-            "value": "Private"
-        },
-        "ports": {
-            "value": [
-                {
-                    "port": "80",
-                    "protocol": "TCP"
-                }
-            ]
-        },
-        "subnetName": {
-            "value": "ACI-Subnet"
-        },
-        "subnetAddressPrefix": {
-            "value": "10.1.0.0/16"
-        },
-         "AZP_URL": {
-	  "value": "https://dev.azure.com/sharmara"
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerInstanceName": {
+      "value": "acibuildagent"
     },
-    "AZP_TOKEN": {
-	  "value": "yziidlo7suttdcfqpq747fo5mr2jjqsloqen6iwv7jlac3s43ndq"
+    "containerCount": {
+      "value": 1
     },
-     "AZP_POOL": {
-	  "value": "ACI-Pool"
+    "azdUrl": {
+      "value": "https://dev.azure.com/sharmara"
+    },
+    "agentPool": {
+      "value": "ACI-Pool"
+    },
+    "agentNamePrefix": {
+      "value": "aci-agent-ubuntu-"
+    },
+    "registryLoginServer": {
+      "value": "raviacrdemo1.azurecr.io"
+    },
+    "registryImageUri": {
+      "value": "raviacrdemo1.azurecr.io/adoagent/agent:v1"
+    },
+    "patToken": {
+       "value": "yziidlo7suttdcfqpq747fo5mr2jjqsloqen6iwv7jlac3s43ndq"
     }
-    }
+  }
 }
