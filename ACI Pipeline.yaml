@@ -1,0 +1,59 @@
+trigger:
+- main
+
+pool:
+  name: ACI-Pool
+
+parameters:
+#------Deployment Parameters--------#
+  - name: AzureDevOpServiceConnectionName
+    type: string
+    displayName: Azure DevOps Service Connection Name
+    default: "Azure-SC"
+  - name: AzureSubscriptionID
+    type: string
+    displayName: Azure Subscription ID
+    default: "2b2bb6af-68a3-4419-af72-5ba0de5312e8"
+  - name: resourceGroupName
+    type: string
+    displayName: Resource Group name for the deployment resources
+    default: "myResourceGroup"
+  - name: Location
+    type: string
+    displayName: Location for the infra Resources
+    default: westus
+
+variables:
+# Deployment Variables
+- name: Location
+  value: ${{parameters.Location }}
+- name: ResourceGroupName
+  value: ${{parameters.resourceGroupName }}
+- name: SubscriptionID
+  value: ${{parameters.AzureSubscriptionID }}
+- name: serviceConnection
+  value: ${{parameters.AzureDevOpServiceConnectionName }}
+
+- stage: Deploy_ACI_buildagent
+  jobs:
+  - job: ACI_buildagent
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      name: ACI_buildagent
+      displayName: 'Deploy Azure Container Instance build agent'
+      inputs:
+        azureResourceManagerConnection: $(serviceConnection)
+        subscriptionId: $(SubscriptionID)
+        resourceGroupName: $(ResourceGroupName)
+        location: $(Location)
+        templateLocation: 'Linked artifact'
+        csmFile: 'ACI-buildagent/ARMTemplate/deploy.json'
+        csmParametersFile: 'ACI-buildagent/ARMTemplate/parameters.json'
+        deploymentMode: 'Incremental'
+        deploymentOutputs: ACI_Outputs
+
+- stage: Run_JOB1_ACI
+  jobs:
+  - job: ACI_buildagent
+    steps:
+    - script: echo Hello, $HOSTNAME
